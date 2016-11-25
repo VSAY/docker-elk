@@ -8,17 +8,19 @@ RUN apt-get update && \
     apt-get clean
 
 # Elasticsearch
-RUN \
-    wget https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-5.0.0.deb && \
-    dpkg -i elasticsearch-5.0.0.deb && \
-    update-rc.d elasticsearch defaults 95 10 && \
-    /etc/init.d/elasticsearch start  
+# RUN \
+#    wget https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-5.0.0.deb && \
+#    dpkg -i elasticsearch-5.0.0.deb && \
+#    update-rc.d elasticsearch defaults 95 10 && \
+#    /etc/init.d/elasticsearch start  
     
-#RUN \
-#    curl -s https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-5.0.0.tar.gz | tar -C /usr/share -xz &&\
-#    ln -s /usr/share/elasticsearch-5.0.0 /usr/share/elasticsearch
+RUN \
+    useradd elasticsearch &&\
+    curl -s https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-5.0.0.tar.gz | tar -C /usr/share -xz &&\
+    ln -s /usr/share/elasticsearch-5.0.0 /usr/share/elasticsearch &&\
+    chown -R elasticsearch /usr/share/elasticsearch
 
-#ADD etc/supervisor/conf.d/elasticsearch.conf /etc/supervisor/conf.d/elasticsearch.conf
+ADD etc/supervisor/conf.d/elasticsearch.conf /etc/supervisor/conf.d/elasticsearch.conf
 
 
 # Logstash
@@ -27,7 +29,7 @@ RUN \
     ln -s /usr/share/logstash-5.0.0 /usr/share/logstash && \
     mkdir /var/log/logstash
 
-ADD etc/supervisor/conf.d/logstash.conf /etc/supervisor/conf.d/logstash.conf
+# ADD etc/supervisor/conf.d/logstash.conf /etc/supervisor/conf.d/logstash.conf
 
 # Logstash plugins
 RUN /usr/share/logstash/bin/logstash-plugin install logstash-filter-translate
