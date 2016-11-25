@@ -15,9 +15,11 @@ RUN apt-get update && \
 #    /etc/init.d/elasticsearch start  
     
 RUN \
-    groupadd -r elasticsearch && useradd -r -g elasticsearch elasticsearch &&\
+    groupadd -r elasticsearch && useradd -r -g elasticsearch elasticsearch 
+RUN \    
     curl -s https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-5.0.0.tar.gz | tar -C /usr/share -xz &&\
-    ln -s /usr/share/elasticsearch-5.0.0 /usr/share/elasticsearch &&\
+    ln -s /usr/share/elasticsearch-5.0.0 /usr/share/elasticsearch 
+RUN \    
     chown -R elasticsearch /usr/share/elasticsearch
 
 ADD etc/supervisor/conf.d/elasticsearch.conf /etc/supervisor/conf.d/elasticsearch.conf
